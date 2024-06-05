@@ -2,7 +2,12 @@ package com.angarium;
 
 import com.angarium.command.AngariumCli;
 import com.angarium.service.ConfigService;
+import com.angarium.service.RequestBuilderService;
+import com.angarium.service.RequestService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.typesafe.config.Config;
+import okhttp3.OkHttpClient;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -12,7 +17,17 @@ public class Main{
         ConfigService configService = new ConfigService();
         Config config = configService.read();
 
-        int exitCode = new CommandLine(new AngariumCli(config)).execute(args);
+        RequestBuilderService requestBuilderService = new RequestBuilderService(
+                config.getString("host"),
+                config.getInt("port"),
+                config.getString("scheme"),
+                new OkHttpClient());
+
+        int exitCode = new CommandLine(new AngariumCli(
+                config,
+                new RequestService(requestBuilderService, new Gson())))
+                .setExecutionExceptionHandler(new PrintExceptionMessageHandler())
+                .execute(args);
         System.exit(exitCode);
     }
 }
