@@ -5,7 +5,6 @@ import com.angarium.service.ConfigService;
 import com.angarium.service.RequestBuilderService;
 import com.angarium.service.RequestService;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.typesafe.config.Config;
 import okhttp3.OkHttpClient;
 import picocli.CommandLine;
@@ -16,6 +15,7 @@ public class Main{
     public static void main(String[] args) throws IOException {
         ConfigService configService = new ConfigService();
         Config config = configService.read();
+
 
         RequestBuilderService requestBuilderService = new RequestBuilderService(
                 config.getString("host"),

@@ -1,19 +1,22 @@
 package com.angarium.command;
 
+import com.angarium.model.FileIdModel;
 import com.angarium.model.FileUploadModel;
-import com.angarium.model.UserModel;
 import com.angarium.service.RequestServiceException;
-import okhttp3.Call;
-import okhttp3.Response;
+import lombok.CustomLog;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.pgpainless.sop.SOPImpl;
 import picocli.CommandLine;
+import sop.SOP;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.security.InvalidParameterException;
 import java.util.concurrent.Callable;
 
+@Slf4j
 @CommandLine.Command(name = "upload", mixinStandardHelpOptions = true, version = "0.1", description = "")
 public class Upload implements Callable<Integer> {
 
@@ -38,6 +41,8 @@ public class Upload implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec commandSpec;
 
+    SOP sop =  new SOPImpl();
+
     @Override
     public Integer call() throws IOException, RequestServiceException {
         String credential = login();
@@ -47,25 +52,26 @@ public class Upload implements Callable<Integer> {
             throw new IOException("No valid file provided, check if it exists and is readable");
         }
 
-        if(StringUtils.isEmpty(filename)){
-            filename = file.getName();
-        }
+        String hash = DigestUtils.sha256Hex(FileUtils.openInputStream(file));
 
+        File processedFile = file;
         if(!StringUtils.isEmpty(password)) {
-
+            processedFile = encryptFile(password, file);
         }
 
         FileUploadModel fileUploadModel = FileUploadModel.builder()
                 .credential(credential)
-                .filename(filename)
-                .file(file)
+                .filename(filename == null ? file.getName() : filename)
+                .file(processedFile)
                 .maxDownloads(maxDownloads)
                 .maxDays(maxDays)
-                .encrypted(false)
-                .sha256("").build();
+                .encrypted(!StringUtils.isEmpty(password))
+                .sha256(hash).build();
 
-        parent.requestService.upload(fileUploadModel);
+        FileIdModel fileIdModel = parent.requestService.upload(fileUploadModel);
 
+        System.out.println("Upload successful");
+        System.out.println("File ID: " + fileIdModel.getFileId());
         return 0;
     }
 
@@ -74,6 +80,15 @@ public class Upload implements Callable<Integer> {
         String username = parent.config.getString("username");
         String password = parent.config.getString("password");
 
-        return parent.requestService.login("default", "password");
+        return parent.requestService.login(username, password);
+    }
+
+    private File encryptFile(String password, File file) throws IOException {
+        File encryptedFile = File.createTempFile("angarium", "enc");
+        sop.encrypt()
+                .withPassword(password)
+                .plaintext(FileUtils.openInputStream(file))
+                .writeTo(FileUtils.openOutputStream(encryptedFile));
+        return encryptedFile;
     }
 }

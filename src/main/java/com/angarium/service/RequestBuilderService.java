@@ -4,8 +4,6 @@ import com.angarium.model.FileUploadModel;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 
-import java.io.File;
-
 @RequiredArgsConstructor
 public class RequestBuilderService {
 
@@ -46,6 +44,22 @@ public class RequestBuilderService {
                         .put(requestBody)
                         .url(basicUrl().addPathSegments("api/upload/" + fileUploadModel.getFilename()).build())
                         .build());
+    }
+
+    public  Call metaDataRequest(String id) {
+        return client.newCall(
+                new Request.Builder()
+                        .url(basicUrl().addPathSegments("api/meta-data/" + id).build())
+                        .build()
+        );
+    }
+
+    public Call downloadRequest(String id) {
+        return client.newCall(
+                new Request.Builder()
+                        .url(basicUrl().addPathSegments("api/download/" + id).build())
+                        .build()
+        );
     }
 
     private HttpUrl.Builder basicUrl(){

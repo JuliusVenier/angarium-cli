@@ -1,13 +1,13 @@
 package com.angarium.service;
 
-import com.angarium.model.FileUploadModel;
-import com.angarium.model.UserModel;
+import com.angarium.model.*;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import okhttp3.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RequiredArgsConstructor
 public class RequestService {
@@ -21,13 +21,28 @@ public class RequestService {
     }
     public UserModel whoami(String credential) throws IOException, RequestServiceException {
         Response response = requestBuilderService.whoamiRequest(credential).execute();
-        checkResponse(response, "Unable to call whoami");
+        checkResponse(response, "Unable to call whoami, request failed");
         return gson.fromJson(response.body().string(), UserModel.class);
     }
 
-    public void upload(FileUploadModel fileUploadModel) throws IOException, RequestServiceException {
+    public FileIdModel upload(FileUploadModel fileUploadModel) throws IOException, RequestServiceException {
         Response response = requestBuilderService.uploadRequest(fileUploadModel).execute();
         checkResponse(response, "Unable to upload File, request failed");
+        return gson.fromJson(response.body().string(), FileIdModel.class);
+    }
+
+    public FileDownloadModel download(String id) throws IOException, RequestServiceException {
+        Response response = requestBuilderService.downloadRequest(id).execute();
+        checkResponse(response, "Unable to download File, request failed");
+
+        return new FileDownloadModel(response.header("Content-Disposition").substring(20), response.body().byteStream());
+    }
+
+    public FileMetaDataModel fileMetaData(String id) throws IOException, RequestServiceException {
+        Response response = requestBuilderService.metaDataRequest(id).execute();
+        checkResponse(response, "Unable to download File, request failed");
+        System.out.println(response.body().string());
+        return gson.fromJson(response.body().string(), FileMetaDataModel.class);
     }
 
     private void checkResponse(Response response, String errorMsg) throws RequestServiceException {
