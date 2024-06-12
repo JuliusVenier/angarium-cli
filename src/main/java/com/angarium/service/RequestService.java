@@ -41,7 +41,6 @@ public class RequestService {
     public FileMetaDataModel fileMetaData(String id) throws IOException, RequestServiceException {
         Response response = requestBuilderService.metaDataRequest(id).execute();
         checkResponse(response, "Unable to download File, request failed");
-        System.out.println(response.body().string());
         return gson.fromJson(response.body().string(), FileMetaDataModel.class);
     }
 

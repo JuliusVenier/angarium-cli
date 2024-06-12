@@ -49,7 +49,8 @@ public class Upload implements Callable<Integer> {
         File file = new File(filePath);
 
         if (!(file.exists() && file.canRead() && file.isFile())) {
-            throw new IOException("No valid file provided, check if it exists and is readable");
+            log.error("No valid file provided, check if it exists and is readable");
+            return 1;
         }
 
         String hash = DigestUtils.sha256Hex(FileUtils.openInputStream(file));
@@ -70,8 +71,8 @@ public class Upload implements Callable<Integer> {
 
         FileIdModel fileIdModel = parent.requestService.upload(fileUploadModel);
 
-        System.out.println("Upload successful");
-        System.out.println("File ID: " + fileIdModel.getFileId());
+        log.info("Upload successful");
+        log.info("File ID: {}", fileIdModel.getFileId());
         return 0;
     }
 

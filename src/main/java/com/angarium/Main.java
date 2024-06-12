@@ -6,11 +6,13 @@ import com.angarium.service.RequestBuilderService;
 import com.angarium.service.RequestService;
 import com.google.gson.Gson;
 import com.typesafe.config.Config;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import picocli.CommandLine;
 
 import java.io.IOException;
 
+@Slf4j
 public class Main{
     public static void main(String[] args) throws IOException {
         ConfigService configService = new ConfigService();

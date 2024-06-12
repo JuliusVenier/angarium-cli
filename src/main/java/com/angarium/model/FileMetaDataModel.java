@@ -36,12 +36,12 @@ public class FileMetaDataModel {
     /**
      * Der Zeitpunkt des Datei-Uploads
      */
-    private LocalDate creationDate;
+    private String creationDate;
 
     /**
      * Zeitpunkt der Löschung der Datei
      */
-    private LocalDate deletionDate;
+    private String deletionDate;
 
     /**
      * TODO
