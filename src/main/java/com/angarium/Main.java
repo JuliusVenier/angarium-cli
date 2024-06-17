@@ -18,7 +18,6 @@ public class Main{
         ConfigService configService = new ConfigService();
         Config config = configService.read();
 
-
         RequestBuilderService requestBuilderService = new RequestBuilderService(
                 config.getString("host"),
                 config.getInt("port"),

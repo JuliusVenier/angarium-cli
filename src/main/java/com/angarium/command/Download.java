@@ -17,6 +17,9 @@ import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
 import java.util.concurrent.Callable;
 
+/**
+ * Diese Klasse definiert den CLI-Befehl zum Herunterladen einer Datei.
+ */
 @CommandLine.Command(name = "download", mixinStandardHelpOptions = true, version = "0.1",
         description = "")
 @Slf4j
@@ -32,6 +35,13 @@ public class Download implements Callable<Integer> {
 
     SOP sop =  new SOPImpl();
 
+    /**
+     * Führt den Download-Befehl aus.
+     *
+     * @return 0 bei erfolgreichem Download, 1 bei Fehlern.
+     * @throws IOException Wenn ein Fehler beim Lesen oder Schreiben der Datei auftritt.
+     * @throws RequestServiceException Wenn ein Fehler beim Anfordern des Dienstes auftritt.
+     */
     @Override
     public Integer call() throws IOException, RequestServiceException {
         FileMetaDataModel fileMetaDataModel = parent.requestService.fileMetaData(fileId);
@@ -77,6 +87,14 @@ public class Download implements Callable<Integer> {
         return 0;
     }
 
+    /**
+     * Entschlüsselt eine Datei mit einem Passwort.
+     *
+     * @param processedFile Die zu entschlüsselnde Datei.
+     * @param fileStream Der InputStream der verschlüsselten Datei.
+     * @param password Das Passwort zur Entschlüsselung.
+     * @throws IOException Wenn ein Fehler beim Lesen oder Schreiben der Datei auftritt.
+     */
     private void decryptFile(File processedFile, InputStream fileStream, String password) throws IOException {
         sop.decrypt()
                 .withPassword(password)
