@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Dienstklasse zur Verwaltung der Konfiguration von Angarium.
+ * Diese Klasse liest die Konfiguration aus einer JSON-Datei im Benutzerverzeichnis.
+ */
 public class ConfigService {
 
 
@@ -23,6 +27,13 @@ public class ConfigService {
 }
 """;
 
+    /**
+     * Liest die Konfigurationsdatei aus dem Benutzerverzeichnis.
+     * Wenn die Datei nicht existiert, wird sie mit der Standardkonfiguration erstellt.
+     *
+     * @return die gelesene Konfiguration
+     * @throws IOException wenn beim Lesen oder Schreiben der Datei ein Fehler auftritt
+     */
     public Config read() throws IOException {
         File homeConfig = new File(Paths.get(System.getProperty("user.home"), ANGARIUM_CONF_NAME).toUri());
         if(!homeConfig.exists()) {

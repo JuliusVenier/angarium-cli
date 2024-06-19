@@ -12,8 +12,20 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 
+/**
+ * Hauptklasse für die Angarium CLI-Anwendung.
+ * Diese Klasse initialisiert die notwendigen Dienste und startet die Kommandozeilen-Anwendung.
+ */
 @Slf4j
 public class Main{
+
+    /**
+     * Der Einstiegspunkt der Anwendung.
+     * Liest die Konfiguration, initialisiert die Dienste und führt die CLI-Befehle aus.
+     *
+     * @param args die Befehlszeilenargumente
+     * @throws IOException wenn beim Lesen der Konfiguration ein Fehler auftritt
+     */
     public static void main(String[] args) throws IOException {
         ConfigService configService = new ConfigService();
         Config config = configService.read();
