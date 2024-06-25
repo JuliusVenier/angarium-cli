@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekt Dokumentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77b300 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        .content {
+            padding: 20px;
+            background: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div id="branding">
+            <h1>Projekt Dokumentation</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#overview">Übersicht</a></li>
+                <li><a href="#javadoc">JavaDoc</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div class="container">
+    <section id="overview" class="content">
+        <h2>Projektübersicht</h2>
+        <p>Willkommen zur Dokumentation des Projekts. Hier finden Sie Links zu verschiedenen Dokumentationsressourcen, einschließlich der JavaDoc und der Schnittstellendokumentation.</p>
+    </section>
+    <section id="javadoc" class="content">
+        <h2>JavaDoc</h2>
+        <p>Die JavaDoc-Seite enthält die automatisch generierte Dokumentation für alle Klassen und Methoden des Projekts.</p>
+        <p><a href="./javadoc" target="_blank">JavaDoc anzeigen</a></p>
+    </section>
+</div>
+</body>
+</html>

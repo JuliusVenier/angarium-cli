@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"Alle Packages","u":"allpackages-index.html"},{"l":"com.angarium"},{"l":"com.angarium.command"},{"l":"com.angarium.model"},{"l":"com.angarium.service"}];updateSearchResults();
